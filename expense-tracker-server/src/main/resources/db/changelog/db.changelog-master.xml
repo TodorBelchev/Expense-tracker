@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="t_belchev">
+        <createTable tableName="roles">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="role" type="VARCHAR(20)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement columnDataType="bigint"
+                          columnName="id"
+                          tableName="roles"
+                          incrementBy="1" startWith="1"/>
+    </changeSet>
+
+    <changeSet id="2" author="t_belchev">
+        <createTable tableName="users">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="username" type="VARCHAR(30)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(200)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
+
+        <addAutoIncrement columnDataType="bigint"
+                          columnName="id"
+                          tableName="users"
+                          incrementBy="1" startWith="1"/>
+    </changeSet>
+
+    <changeSet id="3" author="t_belchev">
+        <createTable tableName="users_roles">
+            <column name="user_id" type="bigint"/>
+            <column name="role_id" type="bigint"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="users_roles"
+                                 constraintName="fk_users_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
+        <addForeignKeyConstraint baseColumnNames="role_id"
+                                 baseTableName="users_roles"
+                                 constraintName="fk_roles_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="roles"/>
+    </changeSet>
+
+    <changeSet id="4" author="t_belchev">
+        <insert tableName="roles">
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="role" value="ADMIN"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
